@@ -303,51 +303,51 @@ public abstract class NormalizableDistance
     
     for (int p1 = 0, p2 = 0; p1 < firstNumValues || p2 < secondNumValues; ) {
       if (p1 >= firstNumValues)
-	firstI = numAttributes;
+	    firstI = numAttributes;
       else
-	firstI = first.index(p1); 
+	    firstI = first.index(p1);
 
       if (p2 >= secondNumValues)
-	secondI = numAttributes;
+	    secondI = numAttributes;
       else
-	secondI = second.index(p2);
+	    secondI = second.index(p2);
 
       if (firstI == classIndex) {
-	p1++; 
-	continue;
+	    p1++;
+	    continue;
       }
       if ((firstI < numAttributes) && !m_ActiveIndices[firstI]) {
-	p1++; 
-	continue;
+        p1++;
+        continue;
       }
        
       if (secondI == classIndex) {
-	p2++; 
-	continue;
+        p2++;
+        continue;
       }
       if ((secondI < numAttributes) && !m_ActiveIndices[secondI]) {
-	p2++;
-	continue;
+        p2++;
+        continue;
       }
        
       double diff;
       
       if (firstI == secondI) {
-	diff = difference(firstI,
-	    		  first.valueSparse(p1),
-	    		  second.valueSparse(p2));
-	p1++;
-	p2++;
+        diff = difference(firstI,
+                      first.valueSparse(p1),
+                      second.valueSparse(p2));
+        p1++;
+        p2++;
       }
       else if (firstI > secondI) {
-	diff = difference(secondI, 
-	    		  0, second.valueSparse(p2));
-	p2++;
+        diff = difference(secondI,
+                      0, second.valueSparse(p2));
+        p2++;
       }
       else {
-	diff = difference(firstI, 
-	    		  first.valueSparse(p1), 0);
-	p1++;
+        diff = difference(firstI,
+                      first.valueSparse(p1), 0);
+        p1++;
       }
       
       distance = updateDistance(distance, diff);
