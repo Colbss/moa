@@ -32,6 +32,8 @@ import moa.classifiers.lazy.neighboursearch.NearestNeighbourSearch;
 import moa.core.Measurement;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * k Nearest Neighbor.<p>
@@ -69,7 +71,9 @@ public class kNN_Centroid2 extends AbstractClassifier implements MultiClassClass
         return "kNN: special.";
     }
 
-    protected Instances window; 
+    protected Instances window;
+
+	protected Instances centroids;
 
 	@Override
 	public void setModelContext(InstancesHeader context) {
@@ -99,7 +103,56 @@ public class kNN_Centroid2 extends AbstractClassifier implements MultiClassClass
 			this.window.delete(0);
 		}
 		this.window.add(inst);
+		addToCentroids(inst);
+
+
     }
+
+	public void addToCentroids(Instance inst){
+
+		if(this.centroids == null){
+			this.centroids = new Instances(inst.dataset());
+			this.centroids.add(inst);
+		}
+		else{
+
+			for(int i = 0; i < this.centroids.size(); i++){
+
+				Instance cent = this.centroids.get(i);
+
+				if(cent.classValue() == inst.classValue()) {
+
+					double[] cent_attrs = cent.toDoubleArray();
+
+				}
+				else{
+					if(i != this.centroids.size()-1) {
+						this.centroids.add(inst);
+						break;
+					}
+				}
+			}
+
+		}
+
+	}
+
+	public void printInstance(Instance inst){
+		StringBuilder sb = new StringBuilder();
+		double classValue = inst.classValue();
+		double[] attrs = inst.toDoubleArray();
+		sb.append("Class: ").append(classValue).append(", Attributes: [");
+		for( int i = 0; i < inst.numAttributes(); i++){
+			sb.append(attrs[i]);
+			if (i < inst.numAttributes() - 1) {
+				sb.append(", ");
+			}
+		}
+		sb.append("]\n");
+		// Print the map contents using a single println statement
+		System.out.println("Map: ");
+		System.out.println(sb.toString());
+	}
 
 	@Override
     public double[] getVotesForInstance(Instance inst) {
